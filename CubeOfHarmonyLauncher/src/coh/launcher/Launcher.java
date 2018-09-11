@@ -29,16 +29,19 @@ import fr.theshark34.supdate.application.integrated.FileDeleter;
 import fr.theshark34.swinger.Swinger;
 
 /**
- * @author tsimo
+ * @author Thibaut SIMON-FINE (alias Bisougai)
+ * 
+ * Based on code by Adrien Navratil (alias Litarvan)
+ * Link : https://github.com/Litarvan/
  *
  */
 public class Launcher {
-	public static final GameVersion COH_VERSION = new GameVersion("1.7.10", GameType.V1_7_10);
+	public static final GameVersion COH_VERSION = new GameVersion("1.12", GameType.V1_8_HIGHER);
 	public static final GameTweak[] TWEAKS = { GameTweak.FORGE }; 
 	public static final GameInfos COH_INFOS = new GameInfos("Cube_of_Harmony_v3", COH_VERSION, TWEAKS);
 	public static final File COH_DIR = COH_INFOS.getGameDir();
 	public static final File COH_PARAMS = new File(Launcher.COH_DIR, "launcher.properties");
-	public static final File COH_RAM_SELECTOR = new File(COH_DIR, "ram.txt");
+	public static final File COH_RAM_SELECTOR = new File(COH_DIR, "cohram.txt");
 	public static final File COH_CRASH_DIR = new File(COH_DIR, "coh-crashes");
 	//public static final GameFolder COH_FOLDER = new GameFolder("resources/assets", "resources/libraries", "resources/natives", "jar/COH.jar");
 	
@@ -54,7 +57,9 @@ public class Launcher {
 	}
 	
 	public static void update() throws Exception {
-		SUpdate su = new SUpdate("http://127.0.0.1/CubeOfHarmony/", COH_DIR);
+		String url = "http://127.0.0.1/CubeOfHarmony/";
+		//String url = "https://bisougai.yj.fr/minecraft/";
+		SUpdate su = new SUpdate(url, COH_DIR);
 		su.addApplication(new FileDeleter());
 		su.getServerRequester().setRewriteEnabled(true);
 		
@@ -69,20 +74,22 @@ public class Launcher {
 						continue;
 					}
 					
-					if (val == max) {
-						LauncherFrame.getInstance().getPanel().setInfoText("Finalisation de l'installation");
-						continue;
-					}
+					//val = (int) BarAPI.getNumberOfTotalDownloadedBytes() / 1000;
+					//max = (int) BarAPI.getNumberOfTotalBytesToDownload() / 1000;
 					
-					val = (int) BarAPI.getNumberOfTotalDownloadedBytes() / 1000;
-					max = (int) BarAPI.getNumberOfTotalBytesToDownload() / 1000;
+					val = BarAPI.getNumberOfDownloadedFiles();
+					max = BarAPI.getNumberOfFileToDownload();
 					
 					LauncherFrame.getInstance().getPanel().getProgressBar().setMaximum(max);
 					LauncherFrame.getInstance().getPanel().getProgressBar().setValue(val);
 					
-					LauncherFrame.getInstance().getPanel().setInfoText("Téléchargement des fichiers " +
-							BarAPI.getNumberOfDownloadedFiles() + "/" + BarAPI.getNumberOfFileToDownload() +
-							Swinger.percentage(val, max) + " %");
+					if (val == max) {
+						LauncherFrame.getInstance().getPanel().setInfoText("Finalisation et vérification de l'installation");
+					} else {
+						LauncherFrame.getInstance().getPanel().setInfoText("Téléchargement des fichiers " +
+								BarAPI.getNumberOfDownloadedFiles() + "/" + BarAPI.getNumberOfFileToDownload() + " " +
+								Swinger.percentage(val, max) + "%");
+					}
 				}
 			};
 		};

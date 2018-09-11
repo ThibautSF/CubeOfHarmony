@@ -7,11 +7,15 @@ import java.awt.HeadlessException;
 
 import javax.swing.JFrame;
 
+import coh.launcher.resources.Resources;
 import fr.theshark34.swinger.Swinger;
 import fr.theshark34.swinger.util.WindowMover;
 
 /**
- * @author tsimo
+ * @author Thibaut SIMON-FINE (alias Bisougai)
+ * 
+ * Based on code by Adrien Navratil (alias Litarvan)
+ * Link : https://github.com/Litarvan/
  *
  */
 public class LauncherFrame extends JFrame {
@@ -24,11 +28,11 @@ public class LauncherFrame extends JFrame {
 	 */
 	public LauncherFrame() throws HeadlessException {
 		this.setTitle("Launcher Cube of Harmony V3");
-		this.setSize(1000, 800);
+		this.setSize(600, 650);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setUndecorated(true);
-		this.setIconImage(Swinger.getResource("icon.png"));
+		this.setIconImage(Swinger.getResource(Resources.APPICON_IMG));
 		
 		panel = new LauncherPanel();
 		this.setContentPane(panel);

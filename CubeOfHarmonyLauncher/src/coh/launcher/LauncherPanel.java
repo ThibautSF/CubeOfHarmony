@@ -15,6 +15,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import coh.launcher.resources.Resources;
 import fr.litarvan.openauth.AuthenticationException;
 import fr.theshark34.openlauncherlib.LaunchException;
 import fr.theshark34.openlauncherlib.util.Saver;
@@ -22,13 +23,15 @@ import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
 import fr.theshark34.swinger.Swinger;
 import fr.theshark34.swinger.animation.Animator;
 import fr.theshark34.swinger.colored.SColoredBar;
-import fr.theshark34.swinger.colored.SColoredButton;
 import fr.theshark34.swinger.event.SwingerEvent;
 import fr.theshark34.swinger.event.SwingerEventListener;
 import fr.theshark34.swinger.textured.STexturedButton;
 
 /**
- * @author tsimo
+ * @author Thibaut SIMON-FINE (alias Bisougai)
+ * 
+ * Based on code by Adrien Navratil (alias Litarvan)
+ * Link : https://github.com/Litarvan/
  *
  */
 public class LauncherPanel extends JPanel implements SwingerEventListener {
@@ -37,30 +40,43 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 	private RamSelector ramSelector = new RamSelector(Launcher.COH_RAM_SELECTOR);
 	
 	private Image background = Swinger.getResource("background.png");
-	private SColoredButton ramButton = new SColoredButton(Swinger.getTransparentWhite(100),Swinger.getTransparentWhite(175));
-	private STexturedButton quitButton = new STexturedButton(Swinger.getResource("quit.png"));
-	private STexturedButton hideButton = new STexturedButton(Swinger.getResource("hide.png"));
+	private STexturedButton ramButton = new STexturedButton(Swinger.getResource(Resources.PARAM_IMG));
+	private STexturedButton quitButton = new STexturedButton(Swinger.getResource(Resources.QUIT_IMG));
+	private STexturedButton hideButton = new STexturedButton(Swinger.getResource(Resources.HIDE_IMG));
 	private JTextField userField = new JTextField(userSaver.get("username"));
 	private JPasswordField passField = new JPasswordField();
-	private STexturedButton playButton = new STexturedButton(Swinger.getResource("playBtn.png"));
-	private JLabel infoLabel = new JLabel("Clique sur Bisougai", SwingConstants.CENTER);
+	private STexturedButton playButton = new STexturedButton(Swinger.getResource(Resources.PLAY_IMG));
+	private JLabel infoLabel = new JLabel("Entrez vous identifiants et cliquez sur \"JOUER\"", SwingConstants.CENTER);
 	private SColoredBar progressBar = new SColoredBar(Color.WHITE, Color.CYAN);
 	
 	
 	public LauncherPanel() {
 		this.setLayout(null);
 		
-		ramButton.setBounds(830, 18, 38, 38);
+		ramButton.setBounds(Resources.PARAM_X, Resources.PARAM_Y);
 		this.ramButton.addEventListener(this);
 		this.add(ramButton);
 		
-		hideButton.setBounds(880, 18);
+		hideButton.setBounds(Resources.HIDE_X, Resources.HIDE_Y);
 		hideButton.addEventListener(this);
 		this.add(hideButton);
 		
-		quitButton.setBounds(940, 18);
+		quitButton.setBounds(Resources.QUIT_X, Resources.QUIT_Y);
 		quitButton.addEventListener(this);
 		this.add(quitButton);
+		
+		JLabel userlbl = new JLabel("Nom utilisateur / email", SwingConstants.CENTER);
+		JLabel passlbl = new JLabel("Mot de passe", SwingConstants.CENTER);
+		
+		userlbl.setBounds(35, 175, 300, 25);
+		userlbl.setForeground(Color.WHITE);
+		userlbl.setFont(userlbl.getFont());
+		this.add(userlbl);
+		
+		passlbl.setBounds(35, 275, 300, 25);
+		passlbl.setForeground(Color.WHITE);
+		passlbl.setFont(passlbl.getFont());
+		this.add(passlbl);
 		
 		/* *
 		//Font style
@@ -71,7 +87,7 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 		userField.setOpaque(false);
 		userField.setBorder(null);
 		/* */
-		userField.setBounds(564, 254, 266, 39);
+		userField.setBounds(35, 200, 300, 40);
 		this.add(userField);
 		
 		/* *
@@ -83,17 +99,17 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 		passField.setOpaque(false);
 		passField.setBorder(null);
 		/* */
-		passField.setBounds(564, 375, 266, 39);
+		passField.setBounds(35, 300, 300, 40);
 		this.add(passField);
 		
-		playButton.setBounds(562, 420);
+		playButton.setBounds(Resources.PLAY_X, Resources.PLAY_Y);;
 		playButton.addEventListener(this);
 		this.add(playButton);
 		
-		progressBar.setBounds(12, 593, 951, 20);
+		progressBar.setBounds(20, 600, 560, 30);
 		this.add(progressBar);
 		
-		infoLabel.setBounds(12, 560, 951, 25);
+		infoLabel.setBounds(20, 570, 560, 25);
 		infoLabel.setForeground(Color.WHITE);
 		infoLabel.setFont(userField.getFont());
 		this.add(infoLabel);
@@ -103,6 +119,7 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 	public void onEvent(SwingerEvent e) {
 		if (e.getSource() == playButton) {
 			setFieldsEnabled(false);
+			ramSelector.save();
 			
 			if(userField.getText().replaceAll(" ", "").length() == 0 || passField.getText().length() == 0) {
 				JOptionPane.showMessageDialog(this, "Erreur, veuillez entrer un pseudo et un mot de passe valides", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -161,6 +178,8 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 		super.paintComponent(g);
 		
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
+		g.setColor(Color.GRAY);
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 	}
 	
 	private void setFieldsEnabled(boolean b) {

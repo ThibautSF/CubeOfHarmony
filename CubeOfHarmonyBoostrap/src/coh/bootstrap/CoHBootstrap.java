@@ -1,5 +1,9 @@
+/**
+ * 
+ */
 package coh.bootstrap;
 
+import java.awt.Color;
 import java.io.File;
 
 import fr.theshark34.openlauncherlib.LaunchException;
@@ -15,16 +19,20 @@ import fr.theshark34.supdate.BarAPI;
 import fr.theshark34.supdate.SUpdate;
 import fr.theshark34.supdate.application.integrated.FileDeleter;
 import fr.theshark34.swinger.Swinger;
-import fr.theshark34.swinger.textured.STexturedProgressBar;
+import fr.theshark34.swinger.colored.SColoredBar;
 
 /**
- * @author tsimo
+ * @author Thibaut SIMON-FINE (alias Bisougai)
+ * 
+ * Based on code by Adrien Navratil (alias Litarvan)
+ * Link : https://github.com/Litarvan/
  *
  */
 public class CoHBootstrap {
 	
 	private static SplashScreen splash;
-	private static STexturedProgressBar bar;
+	//private static STexturedProgressBar bar;
+	private static SColoredBar bar;
 	private static Thread barThread;
 	
 	private static final File COH_B_DIR = new File(GameDirGenerator.createGameDir("Cube_of_Harmony_v3"), "launcher");
@@ -53,8 +61,9 @@ public class CoHBootstrap {
 	private static void displaySplash() {
 		splash = new SplashScreen("Cube of Harmony", Swinger.getResource("splash.png"));
 		splash.setLayout(null);
-		bar = new STexturedProgressBar(Swinger.getResource("icon.png"), Swinger.getResource("icon.png"));
-		bar.setBounds(10, 10, 10, 10);
+		//bar = new STexturedProgressBar(Swinger.getResource("icon.png"), Swinger.getResource("icon.png"));
+		bar = new SColoredBar(Color.WHITE, Color.CYAN);
+		bar.setBounds(10, 10, 380, 80);
 		splash.add(bar);
 		splash.setVisible(true);
 	}
@@ -69,7 +78,7 @@ public class CoHBootstrap {
 			public void run() {
 				while(!this.isInterrupted()) {
 					bar.setValue((int) (BarAPI.getNumberOfTotalDownloadedBytes() / 1000));
-					bar.setMaximum((int) (BarAPI.getNumberOfTotalBytesToDownload() / 100));
+					bar.setMaximum((int) (BarAPI.getNumberOfTotalBytesToDownload() / 1000));
 				}
 			}
 		};
