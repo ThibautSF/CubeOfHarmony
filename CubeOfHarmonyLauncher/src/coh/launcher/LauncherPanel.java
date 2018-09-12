@@ -47,7 +47,7 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 	private JPasswordField passField = new JPasswordField();
 	private STexturedButton playButton = new STexturedButton(Swinger.getResource(Resources.PLAY_IMG));
 	private JLabel infoLabel = new JLabel("Entrez vous identifiants et cliquez sur \"JOUER\"", SwingConstants.CENTER);
-	private SColoredBar progressBar = new SColoredBar(Color.WHITE, Color.CYAN);
+	private SColoredBar progressBar = new SColoredBar(Color.WHITE, Color.GREEN);
 	
 	
 	public LauncherPanel() {

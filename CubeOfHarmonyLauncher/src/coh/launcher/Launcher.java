@@ -57,8 +57,8 @@ public class Launcher {
 	}
 	
 	public static void update() throws Exception {
-		String url = "http://127.0.0.1/CubeOfHarmony/";
-		//String url = "https://bisougai.yj.fr/minecraft/";
+		//String url = "http://127.0.0.1/CubeOfHarmony/";
+		String url = "http://update.cubeofharmony.fr/";
 		SUpdate su = new SUpdate(url, COH_DIR);
 		su.addApplication(new FileDeleter());
 		su.getServerRequester().setRewriteEnabled(true);

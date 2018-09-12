@@ -62,14 +62,16 @@ public class CoHBootstrap {
 		splash = new SplashScreen("Cube of Harmony", Swinger.getResource("splash.png"));
 		splash.setLayout(null);
 		//bar = new STexturedProgressBar(Swinger.getResource("icon.png"), Swinger.getResource("icon.png"));
-		bar = new SColoredBar(Color.WHITE, Color.CYAN);
+		bar = new SColoredBar(Color.WHITE, Color.GREEN);
 		bar.setBounds(10, 10, 380, 80);
 		splash.add(bar);
 		splash.setVisible(true);
 	}
 	
 	private static void doUpdate() throws Exception {
-		SUpdate su = new SUpdate("http://127.0.0.1/CubeOfHarmonyBootstrap/", COH_B_DIR);
+		//String url = "http://127.0.0.1/CubeOfHarmonyBootstrap/";
+		String url = "http://bootstrap.cubeofharmony.fr/";
+		SUpdate su = new SUpdate(url, COH_B_DIR);
 		su.addApplication(new FileDeleter());
 		su.getServerRequester().setRewriteEnabled(true);
 		
